@@ -3,168 +3,223 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gold Messenger</title>
+<title>Messenger</title>
 
 <style>
 body {
   margin: 0;
-  background: #0b0b0b;
-  font-family: system-ui, sans-serif;
-  color: #f5d76e;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+  background: #0b141a;
+  color: white;
 }
 
+/* HEADER */
 header {
-  padding: 16px;
-  text-align: center;
+  background: #202c33;
+  padding: 14px;
   font-weight: 600;
-  border-bottom: 1px solid #222;
+  text-align: center;
 }
 
-#app {
+/* CHAT LIST */
+#chatList, #chatView {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+
+.chat {
   display: flex;
-  flex-direction: column;
-  height: 100vh;
+  align-items: center;
+  padding: 14px;
+  border-bottom: 1px solid #222;
+  cursor: pointer;
 }
 
-#chat {
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #555;
+  margin-right: 12px;
+}
+
+.chat-info {
   flex: 1;
+}
+
+.chat-name {
+  font-weight: 600;
+}
+
+.chat-msg {
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+/* CHAT VIEW */
+#messages {
   padding: 16px;
+  height: calc(100vh - 120px);
   overflow-y: auto;
 }
 
 .msg {
-  margin-bottom: 12px;
-  max-width: 80%;
+  max-width: 75%;
   padding: 10px 14px;
-  border-radius: 14px;
+  margin-bottom: 10px;
+  border-radius: 10px;
   font-size: 14px;
 }
 
 .me {
-  background: #f5d76e;
-  color: black;
+  background: #005c4b;
   margin-left: auto;
 }
 
 .m {
-  background: #1a1a1a;
-  color: #f5d76e;
+  background: #202c33;
 }
 
+/* INPUT */
 #inputBar {
   display: flex;
-  border-top: 1px solid #222;
+  padding: 10px;
+  background: #202c33;
 }
 
 input {
   flex: 1;
-  background: black;
   border: none;
-  padding: 14px;
-  color: #f5d76e;
-  font-size: 14px;
+  border-radius: 20px;
+  padding: 10px 14px;
+  background: #2a3942;
+  color: white;
 }
 
 button {
   background: none;
   border: none;
-  color: #f5d76e;
-  padding: 0 16px;
+  color: #00a884;
   font-size: 18px;
+  margin-left: 10px;
 }
 
-.menu {
-  display: flex;
-  justify-content: space-around;
-  border-top: 1px solid #222;
-  padding: 10px 0;
-  font-size: 12px;
-  opacity: 0.7;
-}
-
-.menu div {
-  cursor: pointer;
-}
-
-.popup {
+/* POPUP */
+#popup {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.85);
   display: none;
   align-items: center;
   justify-content: center;
+  text-align: center;
   color: red;
   font-size: 18px;
-  text-align: center;
 }
 </style>
 </head>
 
 <body>
 
-<div id="app">
-  <header>Gold Messenger — M</header>
+<header id="title">Chats</header>
 
-  <div id="chat">
-    <div class="msg m">Connexion établie.</div>
+<!-- LISTE DES CHATS -->
+<div id="chatList" class="active">
+  <div class="chat" onclick="openChat('M')">
+    <div class="avatar"></div>
+    <div class="chat-info">
+      <div class="chat-name">M</div>
+      <div class="chat-msg">Connexion établie</div>
+    </div>
   </div>
 
-  <div id="inputBar">
-    <input id="msgInput" placeholder="Message…" />
-    <button onclick="send()">➤</button>
+  <div class="chat" onclick="crash()">
+    <div class="avatar"></div>
+    <div class="chat-info">
+      <div class="chat-name">Julie</div>
+      <div class="chat-msg">Photo reçue</div>
+    </div>
   </div>
 
-  <div class="menu">
-    <div onclick="crash()">Appels</div>
-    <div onclick="crash()">Statut</div>
-    <div onclick="crash()">Sécurité+</div>
-    <div onclick="crash()">Serveurs</div>
+  <div class="chat" onclick="crash()">
+    <div class="avatar"></div>
+    <div class="chat-info">
+      <div class="chat-name">Papa</div>
+      <div class="chat-msg">Ok</div>
+    </div>
   </div>
 </div>
 
-<div class="popup" id="popup">
+<!-- VUE CHAT -->
+<div id="chatView">
+  <header onclick="back()">← M</header>
+
+  <div id="messages">
+    <div class="msg m">Synchronisation terminée.</div>
+  </div>
+
+  <div id="inputBar">
+    <input id="input" placeholder="Message…" />
+    <button onclick="send()">➤</button>
+  </div>
+</div>
+
+<!-- POPUP -->
+<div id="popup">
   <div>
     ⚠️ Oups !<br><br>
-    Crash système.<br>
-    Code: G0LD-M
+    Crash système.
   </div>
 </div>
 
 <script>
-const repliesStart = [
-  "La synchronisation",
+const starts = [
   "Le protocole",
-  "L’accès Gold",
   "La couche réseau",
-  "Le flux sécurisé"
+  "L’accès sécurisé",
+  "La session Gold",
+  "Le flux chiffré"
 ];
 
-const repliesMiddle = [
-  "n’est plus aligné avec",
-  "a perdu la clé de",
-  "dépasse les limites de",
-  "refuse la validation de",
-  "ignore complètement"
+const mids = [
+  "ignore totalement",
+  "n’est plus compatible avec",
+  "a perdu le lien vers",
+  "refuse de reconnaître",
+  "désynchronise"
 ];
 
-const repliesEnd = [
-  "la réalité actuelle.",
-  "le serveur principal.",
+const ends = [
   "ton message.",
-  "le temps logique.",
-  "la version humaine."
+  "la logique humaine.",
+  "le serveur principal.",
+  "le temps réel.",
+  "cette conversation."
 ];
 
 function randomReply() {
-  return repliesStart[Math.floor(Math.random()*repliesStart.length)]
-    + " "
-    + repliesMiddle[Math.floor(Math.random()*repliesMiddle.length)]
-    + " "
-    + repliesEnd[Math.floor(Math.random()*repliesEnd.length)];
+  return starts[Math.floor(Math.random()*5)] + " "
+       + mids[Math.floor(Math.random()*5)] + " "
+       + ends[Math.floor(Math.random()*5)];
+}
+
+function openChat() {
+  document.getElementById("chatList").classList.remove("active");
+  document.getElementById("chatView").classList.add("active");
+  document.getElementById("title").textContent = "M";
+}
+
+function back() {
+  document.getElementById("chatView").classList.remove("active");
+  document.getElementById("chatList").classList.add("active");
+  document.getElementById("title").textContent = "Chats";
 }
 
 function send() {
-  const input = document.getElementById("msgInput");
+  const input = document.getElementById("input");
   if (!input.value) return;
 
   addMsg(input.value, "me");
@@ -172,26 +227,24 @@ function send() {
 
   setTimeout(() => {
     addMsg(randomReply(), "m");
-  }, 700);
+  }, 600);
 }
 
 function addMsg(text, cls) {
-  const div = document.createElement("div");
-  div.className = "msg " + cls;
-  div.textContent = text;
-  document.getElementById("chat").appendChild(div);
-  document.getElementById("chat").scrollTop = 99999;
+  const d = document.createElement("div");
+  d.className = "msg " + cls;
+  d.textContent = text;
+  document.getElementById("messages").appendChild(d);
+  document.getElementById("messages").scrollTop = 9999;
 }
 
 function crash() {
   const p = document.getElementById("popup");
   p.style.display = "flex";
-  setTimeout(() => p.style.display = "none", 1500);
+  setTimeout(() => p.style.display = "none", 1200);
 }
 </script>
 
-<!-- Parodie -->
-<!-- Ceci est une interface fictive. Aucun lien avec WhatsApp. -->
-
+<!-- Interface parodique, fictive -->
 </body>
 </html>
