@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gold Messenger</title>
+
+<style>
+body {
+  margin: 0;
+  background: #0b0b0b;
+  font-family: system-ui, sans-serif;
+  color: #f5d76e;
+}
+
+header {
+  padding: 16px;
+  text-align: center;
+  font-weight: 600;
+  border-bottom: 1px solid #222;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#chat {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.msg {
+  margin-bottom: 12px;
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+}
+
+.me {
+  background: #f5d76e;
+  color: black;
+  margin-left: auto;
+}
+
+.m {
+  background: #1a1a1a;
+  color: #f5d76e;
+}
+
+#inputBar {
+  display: flex;
+  border-top: 1px solid #222;
+}
+
+input {
+  flex: 1;
+  background: black;
+  border: none;
+  padding: 14px;
+  color: #f5d76e;
+  font-size: 14px;
+}
+
+button {
+  background: none;
+  border: none;
+  color: #f5d76e;
+  padding: 0 16px;
+  font-size: 18px;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid #222;
+  padding: 10px 0;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.menu div {
+  cursor: pointer;
+}
+
+.popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  color: red;
+  font-size: 18px;
+  text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<div id="app">
+  <header>Gold Messenger — M</header>
+
+  <div id="chat">
+    <div class="msg m">Connexion établie.</div>
+  </div>
+
+  <div id="inputBar">
+    <input id="msgInput" placeholder="Message…" />
+    <button onclick="send()">➤</button>
+  </div>
+
+  <div class="menu">
+    <div onclick="crash()">Appels</div>
+    <div onclick="crash()">Statut</div>
+    <div onclick="crash()">Sécurité+</div>
+    <div onclick="crash()">Serveurs</div>
+  </div>
+</div>
+
+<div class="popup" id="popup">
+  <div>
+    ⚠️ Oups !<br><br>
+    Crash système.<br>
+    Code: G0LD-M
+  </div>
+</div>
+
+<script>
+const repliesStart = [
+  "La synchronisation",
+  "Le protocole",
+  "L’accès Gold",
+  "La couche réseau",
+  "Le flux sécurisé"
+];
+
+const repliesMiddle = [
+  "n’est plus aligné avec",
+  "a perdu la clé de",
+  "dépasse les limites de",
+  "refuse la validation de",
+  "ignore complètement"
+];
+
+const repliesEnd = [
+  "la réalité actuelle.",
+  "le serveur principal.",
+  "ton message.",
+  "le temps logique.",
+  "la version humaine."
+];
+
+function randomReply() {
+  return repliesStart[Math.floor(Math.random()*repliesStart.length)]
+    + " "
+    + repliesMiddle[Math.floor(Math.random()*repliesMiddle.length)]
+    + " "
+    + repliesEnd[Math.floor(Math.random()*repliesEnd.length)];
+}
+
+function send() {
+  const input = document.getElementById("msgInput");
+  if (!input.value) return;
+
+  addMsg(input.value, "me");
+  input.value = "";
+
+  setTimeout(() => {
+    addMsg(randomReply(), "m");
+  }, 700);
+}
+
+function addMsg(text, cls) {
+  const div = document.createElement("div");
+  div.className = "msg " + cls;
+  div.textContent = text;
+  document.getElementById("chat").appendChild(div);
+  document.getElementById("chat").scrollTop = 99999;
+}
+
+function crash() {
+  const p = document.getElementById("popup");
+  p.style.display = "flex";
+  setTimeout(() => p.style.display = "none", 1500);
+}
+</script>
+
+<!-- Parodie -->
+<!-- Ceci est une interface fictive. Aucun lien avec WhatsApp. -->
+
+</body>
+</html>
